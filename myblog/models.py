@@ -17,7 +17,7 @@ class Sort(models.Model):
 #博文
 class Post(models.Model):
     '''
-    1.题目2.主体内容3.创建时间4.最后一次修改时间5.摘要6.分类 7.标签8.作者
+    1.题目2.主体内容3.创建时间4.最后一次修改时间5.摘要6.分类 7.标签8.作者9.访问人数
     '''
     title=models.CharField(max_length=50)
     body=models.TextField()
@@ -27,5 +27,9 @@ class Post(models.Model):
     sort=models.ForeignKey(Sort)
     tags=models.ManyToManyField(Tag,blank=True)
     author=models.ForeignKey(User)
+    views=models.PositiveIntegerField(default=0)
     def __unicode__(self):
         return self.title
+    def update_views(self):
+        self.views += 1
+        self.save(update_fields=['views'])
