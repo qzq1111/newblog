@@ -4,6 +4,9 @@
         <div class="row">
             <div class="col-md-9">
                 <div class="col-md-offset-2">
+                <article class="post post-0">
+                    <h1>{{ posts.first.sort}}</h1>
+                </article>
                 {% for post in posts %}
                     <article class="post post-{{ post.id }}">
                     <div class="panel panel-body" style="padding-left: 0px;">
@@ -11,7 +14,7 @@
                             <h2><a href="{% url 'post_url' post.id %}">{{ post.title }}</a></h2>
                         </div>
                         <div class="summary ">
-                            <p>{{ post.summary }}</p>
+                            <p>{{ post.body|truncatechars:54   }}</p>
                         </div>
                         <div class="sort" >
                             <span class="label label-danger" >{{ post.sort }}</span>
@@ -30,7 +33,7 @@
                 {% endfor %}
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 visible-lg">
            <ul>
                <li>导航</li>
            </ul>

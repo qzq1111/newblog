@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container main">
+        <div class="row">
+            <div class="col-md-9 ">
+            <div class="col-md-offset-2">
+                {% for title in titles %}
+                    <article class="post post-{{ title.id }}">
+                        <div class="panel panel-body" style="padding-left: 0px;">
+                            <div class="title">
+                                <h2><a href="{% url 'post_url' title.id %}">{{ title.title }}</a></h2>
+                            </div>
+                            <div class="summary ">
+                                <p>{{ title.body|truncatechars:54   }}</p>
+                            </div>
+                            <div class="sort" >
+                                <ul class="list-inline">
+                                <li class="label label-danger" >{{ title.sort }}</li>
+                                <li class="glyphicon glyphicon-eye-open" aria-hidden="true">{{ title.views }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                    {% empty %}
+                    <article class="post post-0">
+                    <div class="panel panel-body" style="padding-left: 0px;">
+                        <div class="errors">
+                        <h1> 未找到相关内容......</h1>
+                        </div>
+                    </div>
+                    </article>
+                {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-3 visible-lg" >
+                <ul >
+                <li>导航</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
