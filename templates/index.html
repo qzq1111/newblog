@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- 主体内容-->
+    <div class="container main">
+        <div class="row">
+            <div class="col-md-9 ">
+            <div class="col-md-offset-2">
+            <article class="post post-0">
+                <div class="panel panel-body" style="padding-left: 0px;">
+                <h4>分类：</h4>
+                    {% for sort in sorts %}
+                        <a class="btn btn-default" href="{% url 'sorts_url' sort.id %}"role="button">{{ sort.name }}</a>
+                    {% endfor %}
+                </div>
+            </article>
+            {% for post in posts %}
+                <article class="post post-{{ post.id }}">
+                    <div class="panel panel-body" style="padding-left: 0px;">
+                        <div class="title">
+                            <h2><a href="{% url 'post_url' post.id %}">{{ post.title }}</a></h2>
+                        </div>
+                        <div class="summary ">
+                            <p>{{ post.summary }}</p>
+                        </div>
+                        <div class="sort" >
+                            <span class="label label-danger" >{{ post.sort }}</span>
+                            <span class="label label-success">{{ post.author }}创建于{{ post.created_time|date }}</span>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+            </div>
+            </div>
+            <div class="col-md-3" role="complementary">
+                <ul >
+                <li>导航</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

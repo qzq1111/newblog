@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container main">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="post col-md-offset-2">
+                <article>
+                    <h1>{{ post.title }}</h1>
+                    <div>
+                       {{ post.body|safe|linebreaks }}
+                    </div>
+                    <div class="foot">
+                        <span class="text">标签:</span>
+                        {% for tag in tags %}
+                        <span class="label label-danger">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="col-md-3">
+           <ul>
+               <li>导航</li>
+           </ul>
+        </div>
+    </div>
+    </div>
+{% endblock %}
