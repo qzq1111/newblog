@@ -4,36 +4,51 @@
     <div class="container main">
         <div class="row">
             <div class="col-md-9 ">
-            <div class="col-md-offset-2">
-            <article class="post post-0">
-                <div class="panel panel-body" style="padding-left: 0px;">
-                <h4>分类：</h4>
-                    <ul class="list-inline" >
-                    {% for sort in sorts %}
-                        <li><a class="btn btn-default" href="{% url 'sorts_url' sort.id %}" role="button">{{ sort.name }}</a></li>
-                    {% endfor %}
-                    </ul>
-                </div>
-            </article>
-            {% for post in posts %}
-                <article class="post post-{{ post.id }}">
+                <div class="col-md-offset-2">
+                <article class="post post-0">
                     <div class="panel panel-body" style="padding-left: 0px;">
-                        <div class="title">
-                            <h2><a href="{% url 'post_url' post.id %}">{{ post.title }}</a></h2>
-                        </div>
-                        <div class="summary ">
-                            <p>{{ post.body|truncatechars:54  }}</p>
-                        </div>
-                        <div class="sort" >
-                            <ul class="list-inline">
-                            <li class="label label-danger" >{{ post.sort }}</li>
-                            <li class="glyphicon glyphicon-eye-open" aria-hidden="true">{{ post.views }}</li>
-                            </ul>
-                        </div>
+                    <h4>分类：</h4>
+                        <ul class="list-inline" >
+                        {% for sort in sorts %}
+                            <li><a class="btn btn-default" href="{% url 'sorts_url' sort.id %}" role="button">{{ sort.name }}</a></li>
+                        {% endfor %}
+                        </ul>
                     </div>
                 </article>
-            {% endfor %}
-            </div>
+                {% for post in posts %}
+                    <article class="post post-{{ post.id }}">
+                        <div class="panel panel-body" style="padding-left: 0px;">
+                            <div class="title">
+                                <h2><a href="{% url 'post_url' post.id %}">{{ post.title }}</a></h2>
+                            </div>
+                            <div class="summary ">
+                                <p>{{ post.body|truncatechars:54  }}</p>
+                            </div>
+                            <div class="sort" >
+                                <ul class="list-inline">
+                                <li class="label label-danger" >{{ post.sort }}</li>
+                                <li class="glyphicon glyphicon-eye-open" aria-hidden="true">{{ post.views }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+                </div>
+                <div class="col-md-offset-2">
+                <nav aria-label="...">
+                    <ul class="pager">
+                    {% if posts.has_previous %}
+                        <li class="previous">
+                            <a href="?page={{ posts.previous_page_number }}"><span aria-hidden="true">&larr;</span> 上一页</a></li>
+                    {% endif %}
+                     <li><button class=" btn btn-info">目前是第{{ posts.number }}页</button></li>
+                    {% if posts.has_next %}
+                        <li class="next"><a href="?page={{ posts.next_page_number }}">
+                            下一页 <span aria-hidden="true">&rarr;</span></a></li>
+                    {% endif %}
+                    </ul>
+                </nav>
+                </div>
             </div>
             <div class="col-md-3 visible-lg" >
                 <ul >
