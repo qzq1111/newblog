@@ -1,7 +1,6 @@
 #coding:utf-8
 import markdown
-from django.shortcuts import render
-from django.template.defaultfilters import wordcount
+from django.shortcuts import render,redirect
 
 from myblog import models
 # Create your views here.
@@ -21,16 +20,16 @@ def post(request,postid):
                                         'markdown.extensions.toc',])
         tags=post.tags.all()
     except:
-        post=None
-        tags=None
+        return redirect('/')
     return render(request,'post.html',context={'post':post,'tags':tags})
 def sorts(request,sortid):
     try:
         sort=models.Sort.objects.get(id=sortid)
         posts=models.Post.objects.filter(sort=sort)
+        print  posts
     except:
-        posts=None
-    return render(request,'sort.html',context={'posts':posts})
+        return  redirect('/')
+    return render(request,'sort.html',context={'posts':posts,'sort':sort,})
 
 def search(request):
     title=request.GET['title']
