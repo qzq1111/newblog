@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+    <!-- 主体内容-->
     <div class="container main">
         <div class="row">
             <div class="col-md-9 ">
@@ -33,8 +34,12 @@
                 </div>
             </div>
             <div class="col-md-3 visible-lg" >
-                <ul >
-                <li>导航</li>
+                <h3>推荐阅读</h3>
+                <ul class="list-unstyled" style="font-size: 15px" >
+                    {% for re in recommend %}
+                            <li><a href="{% url 'post_url' re.id %}">{{ re }}</a> </li>
+                    {% endfor %}
+
                 </ul>
             </div>
         </div>

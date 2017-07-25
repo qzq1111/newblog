@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="container">
+    <!-- 主体内容-->
+    <div class="container main">
         <div class="row">
             <div class="col-md-9">
                 <div class="col-md-offset-2">
@@ -18,7 +19,6 @@
                         </div>
                         <div class="sort" >
                             <span class="label label-danger" >{{ post.sort }}</span>
-                            <span class="label label-success">{{ post.author }}创建于{{ post.created_time|date }}</span>
                         </div>
                     </div>
                 </article>
@@ -33,15 +33,14 @@
                 {% endfor %}
                 </div>
             </div>
-            <div class="col-md-3 visible-lg">
-           <ul>
-               <li>导航</li>
-           </ul>
+            <div class="col-md-3 visible-lg" >
+                <h3>推荐阅读</h3>
+                <ul class="list-unstyled" style="font-size: 15px" >
+                    {% for re in recommend %}
+                            <li><a href="{% url 'post_url' re.id %}">{{ re }}</a> </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-        </div>
-
     </div>
-
-
-
 {% endblock %}
