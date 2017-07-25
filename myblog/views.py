@@ -3,12 +3,14 @@ import markdown
 from django.shortcuts import render,redirect
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from myblog import models
+from myblog import blogfunction
 # Create your views here.
+
 
 
 def index(request):
     post=models.Post.objects.all().order_by('created_time')#所以文章
-    recommend=models.Post.objects.all().order_by('-views')[0:10]#推荐阅读
+    recommend=blogfunction.recommend()
     sorts=models.Sort.objects.all()#类别
     paginator=Paginator(post,5)
     page=request.GET.get('page')
@@ -32,7 +34,7 @@ def post(request,postid):
         return redirect('/')
     return render(request,'post.html',context={'post':post,'tags':tags,})
 def sorts(request,sortid):
-    recommend = models.Post.objects.all().order_by('-views')[0:10]  # 推荐阅读
+    recommend = blogfunction.recommend()
     try:
         sort=models.Sort.objects.get(id=sortid)
         posts=models.Post.objects.filter(sort=sort)
@@ -43,6 +45,7 @@ def sorts(request,sortid):
 def search(request):
     title=request.GET.get('title')
     titles=models.Post.objects.filter(title__contains=title)
-    recommend = models.Post.objects.all().order_by('-views')[0:10]  # 推荐阅读
+    recommend = blogfunction.recommend()
     return render(request,'search.html',context={'titles':titles,'recommend':recommend,})
+
 
