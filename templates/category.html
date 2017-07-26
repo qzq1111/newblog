@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- 主体内容-->
+    <div class="container main">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="col-md-offset-2">
+                <div class="post post-0">
+                    <h1>{{ category.name}}</h1>
+                    <p> 简介：{{ category.summary }}</p>
+                </div>
+                <div class="panel-group " id="accordion" role="tablist" aria-multiselectable="true">
+                    {% for post in posts %}
+                       <div class="panel ">
+                            <div class="panel-heading">
+                                <h4 ><a style="color: #0f0f0f" role="button" data-toggle="collapse" data-parent="#accordion" href="#panel{{ post.id }}" aria-expanded="true" aria-controls="collapseOne">
+                                    {{ post.title }}</a></h4>
+                            </div>
+                            <div class="panel-collapse collapse" id="panel{{ post.id }}">
+                                <div class="panel-body">
+                                    {{ post.body|truncatechars:54  }}<a href="{% url 'post_url' post.id %}">更多</a>
+                                </div>
+                            </div>
+                       </div>
+                    {% endfor %}
+                </div>
+                </div>
+            </div>
+            <div class="col-md-3 visible-lg" >
+                <h3>更多教程</h3>
+                <ul class="list-unstyled" style="font-size: 15px" >
+                    {% for cate in categorys %}
+                            <li ><a class="text-danger" href="{% url 'category_url' cate.name %}">{{ cate.name }}</a> </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
