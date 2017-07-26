@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load myfilter %}
 {% block content %}
     <!-- 主体内容-->
     <div class="container main">
@@ -7,7 +8,10 @@
             <div class="post col-md-offset-2">
                 <article>
                     <h1>{{ post.title }}</h1>
-                    <div>
+                    <div class="header">
+                        {{ post.created_time|date }}&nbsp;字数{{ post.body|GetWordNums }}&nbsp;阅读{{ post.views }}
+                    </div>
+                    <div style="font-size: 16px" href="post-body">
                        {{ post.body|safe|linebreaks }}
                     </div>
                     <div class="foot">
@@ -16,6 +20,7 @@
                         <span class="label label-danger">{{ tag }}</span>
                         {% endfor %}
                     </div>
+
                 </article>
             </div>
         </div>
