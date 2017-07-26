@@ -10,8 +10,9 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.name
 #分类
-class Sort(models.Model):
+class Category(models.Model):
     name=models.CharField(max_length=100)
+    summary=models.TextField(default='未添加简介')
     def __unicode__(self):
         return self.name
 #博文
@@ -24,7 +25,7 @@ class Post(models.Model):
     created_time=models.DateTimeField(auto_now_add=True)
     modified_time=models.DateTimeField()
     summary=models.CharField(max_length=100,blank=True)
-    sort=models.ForeignKey(Sort)
+    category=models.ForeignKey(Category)
     tags=models.ManyToManyField(Tag,blank=True)
     author=models.ForeignKey(User)
     views=models.PositiveIntegerField(default=0)
