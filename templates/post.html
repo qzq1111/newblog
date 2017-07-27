@@ -9,9 +9,9 @@
                 <article>
                     <h1>{{ post.title }}</h1>
                     <div class="header">
-                        {{ post.created_time|date }}&nbsp;字数{{ post.body|GetWordNums }}&nbsp;阅读{{ post.views }}
+                        {{ post.created_time|timesince }}&nbsp;&nbsp;字数{{ post.body|GetWordNums }}&nbsp;&nbsp;阅读{{ post.views }}
                     </div>
-                    <div style="font-size: 16px" href="post-body">
+                    <div style="font-size: 16px" class="post-body">
                        {{ post.body|safe|linebreaks }}
                     </div>
                     <div class="foot">
@@ -22,11 +22,30 @@
                     </div>
 
                 </article>
+            <ul class="pager">
+                {% if posts.has_previous %}
+                    <li class="previous">
+                    <a href="{% url 'post_url' posts.previous_page_number %}">
+                        <span aria-hidden="true">&laquo;</span> {{ post.id|Get_Previous_Title}}</a>
+                    </li>
+                {% endif %}
+                {% if posts.has_next %}
+                    <li class="next">
+                    <a href="{% url 'post_url' posts.next_page_number %}">
+                        {{ post.id|Get_Next_Title }}<span aria-hidden="true">&raquo;</span> </a>
+                    </li>
+                {% endif %}
+            </ul>
             </div>
         </div>
         <div class="col-md-3 visible-lg">
+            <h3>目录</h3>
            <ul>
-               <li>导航</li>
+               {% for content in contents %}
+                    <li><a href="#{{ content }}" style="color: #0f0f0f">{{ content }}</a></li>
+                   {% empty %}
+                   <li>无法获取目录！</li>
+               {% endfor %}
            </ul>
         </div>
     </div>
