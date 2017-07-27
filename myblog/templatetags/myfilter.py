@@ -1,8 +1,9 @@
 #coding:utf-8
 from django import template
-
+from myblog import models
 register=template.Library()
 
+#获取文章字数
 @register.filter(name='GetWordNums')
 def GetWordNums(value):
     num = 0
@@ -11,5 +12,19 @@ def GetWordNums(value):
             num = num + 1
     return num
 
-
-
+#获取下一页标题
+@register.filter(name='Get_Next_Title')
+def Get_Next_Title(value):
+    try:
+        next_title=models.Post.objects.get(id=int(value)+1).title
+    except:
+        next_title=None
+    return next_title
+#获取上一页标题
+@register.filter(name='Get_Previous_Title')
+def Get_Previous_Title(value):
+    try:
+        previous_title=models.Post.objects.get(id=int(value)-1).title
+    except:
+        previous_title=None
+    return previous_title
