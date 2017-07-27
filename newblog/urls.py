@@ -19,7 +19,7 @@ from myblog import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',views.index),
-    url(r'^post/(\d+)$',views.post,name='post_url'),
-    url(r'^sort/(\d+)$',views.sorts,name='sorts_url'),
+    url(r'^post/(\d+)/$',views.post,name='post_url'),
+    url(r'^category/(\w+)/$',views.category,name='category_url'),
     url(r'^search/$',views.search,name='search_url'),
 ]
