@@ -31,9 +31,11 @@ def post(request,postid):
                                         'markdown.extensions.codehilite',
                                         'markdown.extensions.toc',])
         tags=post.tags.all()
+        contents=blogfunction.find_id(post.body)#目录
+        posts=blogfunction.page_all(postid)#当前文章页数
     except:
         return redirect('/')
-    return render(request,'post.html',context={'post':post,'tags':tags,})
+    return render(request,'post.html',context={'post':post,'tags':tags,'contents':contents,'posts':posts})
 #类别功能
 def category(request,categoryname):
     try:
