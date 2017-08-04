@@ -18,7 +18,7 @@
                             </div>
                             <div class="panel-collapse collapse" id="panel{{ post.id }}">
                                 <div class="panel-body">
-                                    {{ post.body|truncatechars:54  }}<a href="{% url 'post_url' post.id %}">更多</a>
+                                    {{ post.body|truncatechars:54  }}<a href="{% url 'myblog:post_url' post.id %}">更多</a>
                                 </div>
                             </div>
                        </div>
@@ -30,7 +30,7 @@
                 <h3>更多教程</h3>
                 <ul class="list-unstyled" style="font-size: 15px" >
                     {% for cate in categorys %}
-                            <li ><a class="text-danger" href="{% url 'category_url' cate.name %}">{{ cate.name }}</a> </li>
+                            <li ><a class="text-danger" href="{% url 'myblog:category_url' cate.name %}">{{ cate.name }}</a> </li>
                     {% endfor %}
                 </ul>
             </div>

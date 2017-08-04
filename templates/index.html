@@ -9,7 +9,7 @@
                     <article class="post post-{{ post.id }}">
                         <div class="panel panel-body" style="padding-left: 0px;">
                             <div class="title">
-                                <h2><a href="{% url 'post_url' post.id %}">{{ post.title }}</a></h2>
+                                <h2><a href="{% url 'myblog:post_url' post.id %}">{{ post.title }}</a></h2>
                             </div>
                             <div class="summary ">
                                 <p>{{ post.body|truncatechars:54  }}</p>
@@ -52,7 +52,7 @@
                 <h3>推荐阅读</h3>
                 <ul class="list-unstyled" style="font-size: 15px" >
                     {% for re in recommend %}
-                            <li><a href="{% url 'post_url' re.id %}">{{ re }}</a> </li>
+                            <li><a href="{% url 'myblog:post_url' re.id %}">{{ re }}</a> </li>
                     {% endfor %}
                 </ul>
                 <div>
