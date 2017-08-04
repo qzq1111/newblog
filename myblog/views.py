@@ -2,6 +2,7 @@
 import markdown
 from django.shortcuts import render,redirect
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+from comments.forms import CommentForm
 from myblog import models
 from myblog import blogfunction
 # Create your views here.
@@ -32,10 +33,14 @@ def post(request,postid):
                                         'markdown.extensions.toc',])
         tags=post.tags.all()
         contents=blogfunction.find_id(post.body)#目录
-        posts=blogfunction.page_all(postid)#当前文章页数
+        post_top_back=blogfunction.page_all(postid)#当前文章页数,前后文章
+        form =CommentForm()
+        comment_list=post.comment_set.all().order_by('-created_time')
     except:
         return redirect('/')
-    return render(request,'post.html',context={'post':post,'tags':tags,'contents':contents,'posts':posts})
+    return render(request,'post.html',context={'post':post,'tags':tags,
+                                               'contents':contents,'post_top_back':post_top_back,
+                                               'form':form,'comment_list':comment_list})
 #类别功能
 def category(request,categoryname):
     try:
