@@ -16,6 +16,7 @@ def find_id(value):
         else:
             list_id.append(p[1])
     return list_id
+#分页功能
 def page_all(value):
     post = models.Post.objects.all() # 所以文章
     paginator=Paginator(post,1)
