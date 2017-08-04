@@ -6,16 +6,6 @@ import re
 def recommend():
     recommend = models.Post.objects.all().order_by('-views')[0:10]  # 推荐阅读功能
     return recommend
-#目录功能
-def find_id(value):
-    alls=re.findall("<h2 id='(.+)'|<h3 id='(.+)'",value)
-    list_id=[]
-    for p in alls:
-        if p[0]:
-            list_id.append(p[0])
-        else:
-            list_id.append(p[1])
-    return list_id
 #分页功能
 def page_all(value):
     post = models.Post.objects.all() # 所以文章
