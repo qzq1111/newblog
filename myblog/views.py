@@ -1,6 +1,8 @@
 #coding:utf-8
 import markdown
-from django.shortcuts import render,redirect
+from django.utils.text import slugify
+from markdown.extensions.toc import TocExtension
+from django.shortcuts import render,redirect,get_object_or_404
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from comments.forms import CommentForm
 from myblog import models
@@ -24,31 +26,26 @@ def index(request):
     return render(request,'index.html',context={'posts':posts,'categorys':categorys,'recommend':recommend,})
 #显示具体文章
 def post(request,postid):
-    try:
-        post=models.Post.objects.get(id=postid)
-        post.update_views()
-        post.body=markdown.markdown(post.body,extensions=[
+    post=get_object_or_404(models.Post,id=postid)
+    post.update_views()
+    md=markdown.Markdown(extensions=[
                                         'markdown.extensions.extra',
                                         'markdown.extensions.codehilite',
-                                        'markdown.extensions.toc',])
-        tags=post.tags.all()
-        contents=blogfunction.find_id(post.body)#目录
-        post_top_back=blogfunction.page_all(postid)#当前文章页数,前后文章
-        form =CommentForm()
-        comment_list=post.comment_set.all().order_by('-created_time')
-    except:
-        return redirect('/')
+                                        'markdown.extensions.toc',
+                                        TocExtension(slugify=slugify),])
+    post.body=md.convert(post.body)
+    tags=post.tags.all()#标签
+    post_top_back=blogfunction.page_all(postid)#当前文章页数,前后文章
+    form =CommentForm()#评论表单
+    comment_list=post.comment_set.all().order_by('-created_time')
     return render(request,'post.html',context={'post':post,'tags':tags,
-                                               'contents':contents,'post_top_back':post_top_back,
-                                               'form':form,'comment_list':comment_list})
+                                               'post_top_back':post_top_back,
+                                               'form':form,'comment_list':comment_list,'toc':md.toc})
 #类别功能
 def category(request,categoryname):
-    try:
-        category=models.Category.objects.get(name=categoryname)
-        posts=models.Post.objects.filter(category=category)
-        categorys=models.Category.objects.all()
-    except:
-        return  redirect('/')
+    category=get_object_or_404(models.Category,name=categoryname)
+    posts=models.Post.objects.filter(category=category)
+    categorys=models.Category.objects.all()
     return render(request, 'category.html', context={'posts':posts, 'category':category,'categorys':categorys})
 #搜索功能
 def search(request):
