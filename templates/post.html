@@ -23,15 +23,15 @@
 
                 </article>
             <ul class="pager">
-                {% if posts.has_previous %}
+                {% if post_top_back.has_previous %}
                     <li class="previous">
-                    <a href="{% url 'post_url' posts.previous_page_number %}">
+                    <a href="{% url 'myblog:post_url' post_top_back.previous_page_number %}">
                         <span aria-hidden="true">&laquo;</span> {{ post.id|Get_Previous_Title}}</a>
                     </li>
                 {% endif %}
-                {% if posts.has_next %}
+                {% if post_top_back.has_next %}
                     <li class="next">
-                    <a href="{% url 'post_url' posts.next_page_number %}">
+                    <a href="{% url 'myblog:post_url' post_top_back.next_page_number %}">
                         {{ post.id|Get_Next_Title }}<span aria-hidden="true">&raquo;</span> </a>
                     </li>
                 {% endif %}
@@ -47,6 +47,66 @@
                    <li>无法获取目录！</li>
                {% endfor %}
            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9 ">
+            <div class="col-md-offset-2">
+            <div class="panel panel-body">
+                <h3>{{ comment_list.count }}条评论</h3>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="row">
+        <form action="{% url 'comments:post_comment' post.id %}" method="post" class="comment-form">
+            {% csrf_token %}
+          <div class="col-md-9">
+              <div class="col-md-offset-2">
+                    <div class="panel panel-body">
+                    <div class="col-md-6">
+                  <label for="{{ form.name.id_for_label }}">名字：</label>
+                  {{ form.name }}
+                    </div>
+                    <div class="col-md-6">
+                      <label for="{{ form.email.id_for_label }}">邮箱：</label>
+                      {{ form.email }}
+                    </div>
+                    </div>
+              </div>
+            <div class="col-md-offset-2">
+                <div class="panel panel-body">
+                    <div class="col-md-12">
+                      <label for="{{ form.text.id_for_label }}">评论：</label>
+                      {{ form.text }}
+                      <button type="submit" class="btn btn-default">发表</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </form>
+    </div>
+    <div class="row col-md-9 ">
+        <div class="col-md-offset-2">
+        <div class="comment-list">
+            {% for comment in comment_list %}
+                <div class="panel">
+                <div class="panel-heading">
+                <span>{{ comment.name }}</span>
+                </div>
+                <div class="panel-body">
+                  {{ comment.text|linebreaksbr }}
+                </div>
+                <div class="panel-body">
+                    <p >{{ comment.created_time|timesince }}</p>
+                </div>
+                </div>
+              {% empty %}
+                <div class="panel-body">
+              暂无评论
+                </div>
+              {% endfor %}
+            </div>
         </div>
     </div>
     </div>
