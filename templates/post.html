@@ -9,7 +9,7 @@
                 <article>
                     <h1>{{ post.title }}</h1>
                     <div class="header">
-                        {{ post.created_time|timesince }}&nbsp;&nbsp;字数{{ post.body|GetWordNums }}&nbsp;&nbsp;阅读{{ post.views }}
+                        {{ post.created_time|timesince }}&nbsp;&nbsp;字数{{ post.body|GetWordNums }}&nbsp;&nbsp;阅读{{ post.views }}&nbsp;&nbsp;评论{{ comment_list.count }}
                     </div>
                     <div style="font-size: 16px" class="post-body">
                        {{ post.body|safe|linebreaks }}
@@ -40,13 +40,7 @@
         </div>
         <div class="col-md-3 visible-lg">
             <h3>目录</h3>
-           <ul>
-               {% for content in contents %}
-                    <li><a href="#{{ content }}" style="color: #0f0f0f">{{ content }}</a></li>
-                   {% empty %}
-                   <li>无法获取目录！</li>
-               {% endfor %}
-           </ul>
+           {{ toc|safe }}
         </div>
     </div>
     <div class="row">
