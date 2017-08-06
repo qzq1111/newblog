@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 
 class info(models.Model):
     nickname=models.CharField(max_length=50,blank=True)
-    image=models.ImageField(upload_to='static/images/users/%Y/%m',
-                            default='static/images/users/default.png',
+    image=models.ImageField(upload_to='/static/images/users/%Y/%m',
+                            default='/static/images/users/default.png',
                             max_length=200,blank=True,null=True)
     user=models.OneToOneField(User)
 
