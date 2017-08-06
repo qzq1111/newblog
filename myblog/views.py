@@ -53,5 +53,3 @@ def search(request):
     titles=models.Post.objects.filter(title__contains=title)
     recommend = blogfunction.recommend()
     return render(request,'search.html',context={'titles':titles,'recommend':recommend,})
-
-
