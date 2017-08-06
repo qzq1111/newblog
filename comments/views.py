@@ -1,9 +1,10 @@
 from django.shortcuts import render,get_object_or_404,redirect
-
+from django.contrib.auth.models import User
 # Create your views here.
 from myblog.models import Post
 from .models import Comment
 from .forms import CommentForm
+
 
 def post_comment(request,postid):
     post=get_object_or_404(Post,id=postid)
@@ -12,6 +13,7 @@ def post_comment(request,postid):
         if form.is_valid():
             comment=form.save(commit=False)
             comment.post=post
+            comment.user=User.objects.get(id=request.user.id)
             comment.save()
             return redirect('/post/'+postid)
         else:
