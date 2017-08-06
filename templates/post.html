@@ -53,22 +53,11 @@
         </div>
     </div>
     <div class="row">
-        <form action="{% url 'comments:post_comment' post.id %}" method="post" class="comment-form">
-            {% csrf_token %}
-          <div class="col-md-9">
-              <div class="col-md-offset-2">
-                    <div class="panel panel-body">
-                    <div class="col-md-6">
-                  <label for="{{ form.name.id_for_label }}">名字：</label>
-                  {{ form.name }}
-                    </div>
-                    <div class="col-md-6">
-                      <label for="{{ form.email.id_for_label }}">邮箱：</label>
-                      {{ form.email }}
-                    </div>
-                    </div>
-              </div>
-            <div class="col-md-offset-2">
+        {% if request.user.is_authenticated %}
+            <form action="{% url 'comments:post_comment' post.id %}" method="post" class="comment-form">
+                {% csrf_token %}
+                <div class="col-md-9">
+                <div class="col-md-offset-2">
                 <div class="panel panel-body">
                     <div class="col-md-12">
                       <label for="{{ form.text.id_for_label }}">评论：</label>
@@ -78,7 +67,21 @@
                 </div>
             </div>
           </div>
-        </form>
+            </form>
+        {% else %}
+            <div class="col-md-9">
+                <div class="col-md-offset-2">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <p class="text-center" >
+                                评论请<a href="{% url 'users:login_url'%}">登陆</a>或<a href="{% url 'users:register_url' %}">注册</a>！
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
     </div>
     <div class="row col-md-9 ">
         <div class="col-md-offset-2">
@@ -86,7 +89,8 @@
             {% for comment in comment_list %}
                 <div class="panel">
                 <div class="panel-heading">
-                <span>{{ comment.name }}</span>
+                    <img src="{{ comment.user.info.image }}"  class="img-circle img-thumbnail"style="width:50px;height: 50px">
+                    <span>{{ comment.user}}</span>
                 </div>
                 <div class="panel-body">
                   {{ comment.text|linebreaksbr }}
