@@ -9,7 +9,7 @@
                 <article>
                     <h1>{{ post.title }}</h1>
                     <div class="header">
-                        {{ post.created_time|timesince }}&nbsp;&nbsp;字数{{ post.body|GetWordNums }}&nbsp;&nbsp;阅读{{ post.views }}&nbsp;&nbsp;评论{{ comment_list.count }}
+                        <p>{{ post.created_time|timesince }}&nbsp;&nbsp;字数{{ post.body|GetWordNums }}&nbsp;&nbsp;阅读{{ post.views }}&nbsp;&nbsp;评论{{ comment_list.count }}</p>
                     </div>
                     <div style="font-size: 16px" class="post-body">
                        {{ post.body|safe|linebreaks }}
@@ -72,16 +72,15 @@
             <div class="col-md-9">
                 <div class="col-md-offset-2">
                     <div class="panel panel-danger">
-                        <div class="panel-heading">
-                            <p class="text-center" >
-                                评论请<a href="{% url 'users:login_url'%}">登陆</a>或<a href="{% url 'users:register_url' %}">注册</a>！
-                            </p>
+                        <div class="panel-heading" style="height: 100px;">
+                            <h2 class="text-center" >
+                                评论请<a href="{% url 'users:login_url'%}?next={{ request.path }}">登陆</a>或<a href="{% url 'users:register_url' %}?next={{ request.path }}">注册</a>！
+                            </h2>
                         </div>
                     </div>
                 </div>
             </div>
         {% endif %}
-
     </div>
     <div class="row col-md-9 ">
         <div class="col-md-offset-2">
@@ -89,15 +88,13 @@
             {% for comment in comment_list %}
                 <div class="panel">
                 <div class="panel-heading">
-                    <img src="{{ comment.user.info.image }}"  class="img-circle img-thumbnail"style="width:50px;height: 50px">
-                    <span>{{ comment.user}}</span>
+                    <img src="{{ comment.user.info.image }}"  class="img-circle img-thumbnail" style="width:50px;height: 50px">
+                    <span style="font-size: large">{{ comment.user}}</span>
+                    <span class="text-muted pull-right">{{ comment.created_time|timesince }}</span>
                 </div>
-                <div class="panel-body">
-                  {{ comment.text|linebreaksbr }}
-                </div>
-                <div class="panel-body">
-                    <p >{{ comment.created_time|timesince }}</p>
-                </div>
+                    <div class="panel-body">
+                        <p >{{ comment.text|linebreaksbr }}</p>
+                    </div>
                 </div>
               {% empty %}
                 <div class="panel-body">
