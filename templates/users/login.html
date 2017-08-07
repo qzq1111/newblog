@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+            <div class="col-md-offset-2">
+                <h2 class="text-center">登陆</h2>
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                <form  action="{% url 'users:login_url' %}" method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {{ field.label_tag }}
+                         <div class="form-group">
+                        {{ field }}
+                        </div>
+                        {% if field.help_text %}
+                            <p>{{ field.help_text|safe }}</p>
+                        {% endif %}
+                    {% endfor %}
+                    <input type="hidden" name="next" value="{{ next }}"/>
+                    <button type="submit" class="btn btn-primary btn-block">登陆</button>
+                </form>
+                <div class="form-group">
+                    <a href="{% url 'users:register_url' %}?next={{ request.path }}">没有账号注册</a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

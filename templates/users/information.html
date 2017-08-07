@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load myfilter %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="col-md-offset-2">
+                    <h2 class="text-center">个人资料</h2>
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    <form  action="." method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            {% if forloop.last %}
+                                <div>
+                                当前头像：<img src="{{request.user.id|Get_User_Image}}" class="img-circle img-thumbnail" style="width:50px;height: 50px">
+                                <a href="{{request.user.id|Get_User_Image}}">{{request.user}}</a>
+                                </div>
+                                {{ field.label_tag }}
+                                {{ field }}
+                            {% else %}
+                                <div class="form-group">
+                                {{ field.label_tag }}
+                                {{ field }}
+                                </div>
+                            {% endif %}
+                            {% if field.help_text %}
+                                <p>{{ field.help_text|safe }}</p>
+                            {% endif %}
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary btn-block">更新</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <ul>
+                    <li><a href="#">个人资料</a></li>
+                    <li><a href="#">修改密码</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
