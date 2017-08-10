@@ -67,10 +67,13 @@ def change_password(request):
 
 @login_required(login_url='/user/login/')
 def information(request):
-    if request.POST=="POST":
-        form=forms.InformationForm(request.POST)
+    if request.method == "POST":
+        form=forms.InformationForm(request.POST,request.FILES,instance=request.user)
+        print form
         if form.is_valid():
-            print form
+            form.save()
+
+            return redirect('/')
     else:
         form = forms.InformationForm()
         return render(request,'users/information.html',context={'form':form})
