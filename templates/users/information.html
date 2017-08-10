@@ -9,13 +9,13 @@
                         {% for message in messages %}
                             <div class="alert alert-{{ message.tags }}">{{ message }}</div>
                         {% endfor %}
-                    <form  action="." method="post" enctype="multipart/form-data">
+                    <form  action="{% url 'users:information_url' %}" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         {% for field in form %}
                             {% if forloop.last %}
                                 <div>
-                                当前头像：<img src="{{request.user.id|Get_User_Image}}" class="img-circle img-thumbnail" style="width:50px;height: 50px">
-                                <a href="{{request.user.id|Get_User_Image}}">{{request.user}}</a>
+                                当前头像：<img src="{% url 'myblog:index_url' %}{{ user.info.image }}" class="img-circle img-thumbnail" style="width:50px;height: 50px">
+                                <a href="{% url 'myblog:index_url' %}{{request.user.id|Get_User_Image}}">{{request.user}}</a>
                                 </div>
                                 {{ field.label_tag }}
                                 {{ field }}
