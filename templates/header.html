@@ -1,6 +1,6 @@
 <!-- 导航栏 -->
 <div class="header">
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default ">
         <div class="container-fluid">
             <div class="row col-md-9 col-md-offset-2">
             <div class="navbar-header">
@@ -28,7 +28,14 @@
                     <li class="dropdown">
                     {% if request.user.is_authenticated %}
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <img src="{% url 'myblog:index_url' %}{{ user.info.image }}"  class="img-circle img-thumbnail" style="width:30px;height: 30px">{{ request.user.username }} <span class="caret"></span></a>
+                            <img src="{% url 'myblog:index_url' %}{{ user.info.image }}"  class="img-circle img-thumbnail" style="width:30px;height: 30px">
+                            {% if request.user.info.nickname %}
+                            {{ request.user.info.nickname }}
+                                {% else %}
+                                {{ request.user}}
+                            {% endif %}
+
+                            <span class="caret"></span></a>
                     {% else %}
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">登陆/注册 <span class="caret"></span></a>
                     {% endif %}

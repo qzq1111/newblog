@@ -88,8 +88,13 @@
             {% for comment in comment_list %}
                 <div class="panel">
                 <div class="panel-heading">
-                    <img src="{{ comment.user.info.image }}"  class="img-circle img-thumbnail" style="width:50px;height: 50px">
-                    <span style="font-size: large">{{ comment.user}}</span>
+                    <img src="{% url 'myblog:index_url' %}{{ comment.user.info.image }}"  class="img-circle img-thumbnail" style="width:50px;height: 50px">
+                    {% if comment.user.info.nickname %}
+                        <span style="font-size: large">{{ comment.user.info.nickname}}</span>
+                    {% else %}
+                        <span style="font-size: large">{{ comment.user}}</span>
+                    {% endif %}
+
                     <span class="text-muted pull-right">{{ comment.created_time|timesince }}</span>
                 </div>
                     <div class="panel-body">
