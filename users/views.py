@@ -31,8 +31,8 @@ def login(request):
     if request.method=='POST':
         form=forms.LoginForm(request.POST)
         if form.is_valid():
-            login_name=request.POST['username'].strip()
-            login_password=request.POST['password']
+            login_name=form.cleaned_data['username']
+            login_password=form.cleaned_data['password']
             user=authenticate(username=login_name,password=login_password)
             if user is not None:
                 if user.is_active:
@@ -62,18 +62,35 @@ def logout(request):
 
 @login_required(login_url='/user/login/')
 def change_password(request):
-
-    return
-
-@login_required(login_url='/user/login/')
-def information(request):
-    if request.method == "POST":
-        form=forms.InformationForm(request.POST,request.FILES,instance=request.user)
-        print form
+    if request.method=="POST":
+        form = forms.SetPassWord(request.user,request.POST)
         if form.is_valid():
             form.save()
-
-            return redirect('/')
+            messages.add_message(request, messages.SUCCESS, '修改成功！')
+            return redirect(request.path)
     else:
-        form = forms.InformationForm()
-        return render(request,'users/information.html',context={'form':form})
+        form =forms.SetPassWord(request.user)
+    return render(request,'users/changepassword.html',context={'form':form})
+
+@login_required(login_url='/user/login/')
+def information_change(request):
+    if request.method == "POST":
+        form=forms.InformationForm(request.POST,request.FILES)
+        if form.is_valid():
+            nikname=form.cleaned_data['nickname']
+            qq=form.cleaned_data['qq']
+            url=form.cleaned_data['url']
+            image=form.cleaned_data['image']
+            obj = models.info.objects.get(user_id=request.user)
+            obj.nickname=nikname
+            obj.qq=qq
+            obj.url=url
+            if image !='static/images/users/default.png':
+                obj.image=image
+            obj.save()
+            messages.add_message(request,messages.SUCCESS,'修改成功！')
+            return redirect(request.path)
+    else:
+        obj = models.info.objects.get(user_id=request.user)
+        form = forms.InformationForm(instance=obj)
+        return render(request, 'users/information_change.html', context={'form':form})
