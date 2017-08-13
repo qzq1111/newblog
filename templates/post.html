@@ -86,7 +86,7 @@
         <div class="col-md-offset-2">
         <div class="comment-list">
             {% for comment in comment_list %}
-                <div class="panel">
+                <div class="panel panel-default" id="{{ comment.id }}">
                 <div class="panel-heading">
                     <img src="{% url 'myblog:index_url' %}{{ comment.user.info.image }}"  class="img-circle img-thumbnail" style="width:50px;height: 50px">
                     {% if comment.user.info.nickname %}
@@ -94,12 +94,42 @@
                     {% else %}
                         <span style="font-size: large">{{ comment.user}}</span>
                     {% endif %}
-
                     <span class="text-muted pull-right">{{ comment.created_time|timesince }}</span>
                 </div>
                     <div class="panel-body">
                         <p >{{ comment.text|linebreaksbr }}</p>
                     </div>
+                    <div class="panel-footer" >
+                        <p class="text-right"><a href="{% url 'comments:reply_comment' comment.id %}">回复</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                    </div>
+                    <ul class="list-group comment-child">
+                    {% for foo in comment.id|Get_Comment_Child %}
+                        <li class="list-group-item">
+                            <div class="header" ><img src="{% url 'myblog:index_url' %}{{ foo.form_user.info.image }}"  class="img-circle img-thumbnail" style="width:30px;height: 30px">
+                            <span  class=" text-small text-muted">
+                                {% if foo.form_user.info.nickname %}
+                                    {{ foo.form_user.info.nickname }}
+                                {% else %}
+                                    {{ foo.form_user }}
+                                {% endif %}
+                            </span>
+                            <span class="text-danger">回复</span>
+                            <span class="text-small text-muted">
+                                {% if foo.to_user.info.nickname  %}
+                                    {{ foo.to_user.info.nickname }}
+                                {% else %}
+                                    {{ foo.to_user }}
+                                {% endif %}
+                            </span>
+                            <span class="text-muted pull-right">{{ foo.created_time|timesince }}</span>
+                            </div>
+                            <div class="body" style="margin-left: 15px ;margin-top: 10px">
+                                <p>{{ foo.body|linebreaksbr }}</p></div>
+                            <div class="footer " >
+                                <p class="text-right"><a href="{% url 'comments:reply_comment' comment.id %}">回复</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div>
+                        </li>
+                    {% endfor %}
+                    </ul>
                 </div>
               {% empty %}
                 <div class="panel-body">
