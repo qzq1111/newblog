@@ -41,6 +41,7 @@
                     {% endif %}
                       <ul class="dropdown-menu">
                           {% if request.user.is_authenticated %}
+                              <li><a href="#">消息</a></li>
                               <li><a href="{% url 'users:information_url' %}">个人中心</a></li>
                               <li><a href="{% url 'users:logout_url' %}?next={{ request.path }}">登出</a></li>
                           {% else %}
