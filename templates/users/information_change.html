@@ -5,6 +5,8 @@
         <div class="row">
             <div class="col-md-9">
                 <div class="col-md-offset-2">
+                <div class="list-group">
+                <div class="list-group-item">
                     <h2 class="text-center">修改个人资料</h2>
                         {% for message in messages %}
                             <div class="alert alert-{{ message.tags }} text-center alert-dismissible" role="alert">
@@ -18,7 +20,7 @@
                             {% if forloop.last %}
                                 <div style="font-weight:700">
                                 当前头像：<img src="{% url 'myblog:index_url' %}{{ user.info.image }}" class="img-circle img-thumbnail" style="width:50px;height: 50px">
-                                <a href="{% url 'myblog:index_url' %}{{request.user.id|Get_User_Image}}">{{request.user}}</a>
+                                <a href="{% url 'myblog:index_url' %}{{user.info.image}}">{{request.user}}</a>
                                 </div>
                                 {{ field.label_tag }}
                                 {{ field }}
@@ -36,6 +38,8 @@
                         {% endfor %}
                         <button type="submit" class="btn btn-primary btn-block">更新</button>
                     </form>
+                </div>
+            </div>
                 </div>
             </div>
             <div class="col-md-3">
