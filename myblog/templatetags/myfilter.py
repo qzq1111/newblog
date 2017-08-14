@@ -1,6 +1,8 @@
 #coding:utf-8
 from django import template
 from myblog import models
+from comments.models import Comment,Reply
+from users.models import info
 register=template.Library()
 
 #获取文章字数
@@ -28,3 +30,16 @@ def Get_Previous_Title(value):
     except:
         previous_title=None
     return previous_title
+#获取评论数
+@register.filter(name='Get_Comments_num')
+def Get_Comments_num(value):
+    try:
+        commentnum=Comment.objects.filter(post=value).count()
+    except:
+        commentnum=0
+    return  commentnum
+
+#获取回复
+@register.filter(name='Get_Comment_Child')
+def Get_Comment_Child(value):
+    return Reply.objects.filter(comment=value)
