@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment
+from comments.models import Comment,Reply
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -7,4 +7,11 @@ class CommentForm(forms.ModelForm):
         fields=['text']
         widgets={
             'text':forms.Textarea(attrs={'class':'form-control'})
+        }
+class ReplyCommentForm(forms.ModelForm):
+    class Meta:
+        model=Reply
+        fields=['body']
+        widgets={
+            'body':forms.Textarea(attrs={'class':'form-control'})
         }
