@@ -27,13 +27,13 @@ def index(request):
 #显示具体文章
 def post(request,postid):
     post=get_object_or_404(models.Post,id=postid)
-    post.update_views()
+    post.update_views()#更新浏览次数
     md=markdown.Markdown(extensions=[
                                         'markdown.extensions.extra',
                                         'markdown.extensions.codehilite',
                                         'markdown.extensions.toc',
                                         TocExtension(slugify=slugify),])
-    post.body=md.convert(post.body)
+    post.body=md.convert(post.body)#生成目录
     tags=post.tags.all()#标签
     post_top_back=blogfunction.page_all(postid)#当前文章页数,前后文章
     form =CommentForm()#评论表单
