@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load myfilter %}
+{% block content %}
+    <!-- 主体内容-->
+    <div class="container main">
+    <div class="row">
+    <div class="col-md-9">
+        <div class="col-md-offset-2">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} text-centeralert-dismissible" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+            {% endfor %}
+            {% if comment.body %}
+                <div class="panel panel-default">
+                <div class="panel-heading">
+                    <img src="{% url 'myblog:index_url' %}{{ comment.form_user.info.image }}"  class="img-circle img-thumbnail" style="width:50px;height: 50px">
+                    {% if comment.form_user.info.nickname %}
+                        <span style="font-size: large">{{ comment.form_user.info.nickname}}</span>
+                    {% else %}
+                        <span style="font-size: large">{{ comment.form_user}}</span>
+                    {% endif %}
+                    <span class="text-muted pull-right">{{ comment.created_time|timesince }}</span>
+                </div>
+                <div class="panel-body">
+                <p>{{ comment.body|linebreaksbr }}</p>
+                </div>
+                </div>
+            {% else %}
+                <div class="panel panel-default">
+                <div class="panel-heading">
+                    <img src="{% url 'myblog:index_url' %}{{ comment.user.info.image }}"  class="img-circle img-thumbnail" style="width:50px;height: 50px">
+                    {% if comment.user.info.nickname %}
+                        <span style="font-size: large">{{ comment.user.info.nickname}}</span>
+                    {% else %}
+                        <span style="font-size: large">{{ comment.user}}</span>
+                    {% endif %}
+                    <span class="text-muted pull-right">{{ comment.created_time|timesince }}</span>
+                </div>
+                <div class="panel-body">
+                <p>{{ comment.text|linebreaksbr }}</p>
+                </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+    <div class="row">
+        {% if request.user.is_authenticated %}
+             <div class="col-md-9">
+                 <div class="col-md-offset-2">
+                    <div class="panel panel-body">
+                    <form action="." method="post" class="comment-form">
+                        {% csrf_token %}
+                        {% if comment.body %}
+                                <label >回复
+                                {% if  comment.form_user.info.nickname  %}
+                                    <span class="text-danger">{{ comment.form_user.info.nickname }}</span>
+                                {% else %}
+                                    <span class="text-danger">{{  comment.form_user }}</span>
+                                {% endif %}：
+                            </label>
+                                {{ form.body}}
+                                <input class="hidden" value="{{   user.id }}" name="form_user" >
+                                <input class="hidden" value="{{ comment.form_user.id  }}" name="to_user">
+                                <input class="hidden" value="{{ comment.comment.id }} " name="comment">
+                                <input type="hidden" name="next" value="{{ next }}"/>
+                                <button type="submit" class="btn btn-default pull-right">回复</button>
+                            {% else %}
+                                <label >回复
+                                {% if  comment.user.info.nickname  %}
+                                    <span class="text-danger">{{ comment.user.info.nickname }}</span>
+                                {% else %}
+                                    <span class="text-danger">{{  comment.user }}</span>
+                                {% endif %}：
+                            </label>
+                                {{ form.body}}
+                                <input class="hidden" value="{{   user.id }}" name="form_user">
+                                <input class="hidden" value="{{ comment.user_id  }}" name="to_user">
+                                <input class="hidden" value="{{ comment.id }} " name="comment">
+                                <input type="hidden" name="next" value="{{ next }}"/>
+                                <button type="submit" class="btn btn-default pull-right">回复</button>
+                            {% endif %}
+                    </form>
+                  </div>
+                 </div>
+            </div>
+        {% else %}
+            <div class="col-md-9">
+                <div class="col-md-offset-2">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading" style="height: 100px;">
+                            <h2 class="text-center" >
+                                评论请<a href="{% url 'users:login_url'%}?next={{ request.path }}">登陆</a>或<a href="{% url 'users:register_url' %}?next={{ request.path }}">注册</a>！
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    </div>
+{% endblock %}
