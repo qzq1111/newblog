@@ -68,6 +68,9 @@ def change_password(request):
             form.save()
             messages.add_message(request, messages.SUCCESS, '修改成功！')
             return redirect(request.path)
+        else:
+            messages.add_message(request,messages.WARNING,'检查字段！')
+            return redirect(request.path)
     else:
         form =forms.SetPassWord(request.user)
     return render(request,'users/changepassword.html',context={'form':form})
@@ -89,6 +92,9 @@ def information_change(request):
                 obj.image=image
             obj.save()
             messages.add_message(request,messages.SUCCESS,'修改成功！')
+            return redirect(request.path)
+        else:
+            messages.add_message(request, messages.WARNING, '检查上传图片格式！')
             return redirect(request.path)
     else:
         obj = models.info.objects.get(user_id=request.user)
